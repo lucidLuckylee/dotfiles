@@ -1,0 +1,112 @@
+/******************************************************************************
+ * ROFI Color theme
+ * User: Rasi
+ * Copyright: Rasmus Steinke
+ ******************************************************************************/
+* {
+    font:			 "inconsolata bold 20";
+    background:                  rgba ( 30, 31, 62, 80 % );
+    foreground:                  rgba ( 213, 154, 208, 100 % );
+    selected-normal-foreground:  rgba ( 6, 182, 239, 80% );
+    normal-foreground:           @foreground;
+    alternate-normal-background: @background; 
+    selected-urgent-foreground:  @selected-urgent-foreground;
+    urgent-foreground:           @foreground;
+    alternate-urgent-background: @background;
+    active-foreground:           @foreground;
+    lightbg:                     @background;
+    selected-active-foreground:  @selected-normal-foreground;
+    alternate-active-background: @background;
+    bordercolor:                 @foreground;
+    alternate-normal-foreground: @foreground;
+    normal-background:           @background;
+    lightfg:                     @foreground;
+    selected-normal-background:  @background;
+    border-color:                rgba ( 72, 182 , 133 , 80 %);
+    spacing:                     4;
+    separatorcolor:              @background;
+    urgent-background:           @background;
+    selected-urgent-background:  @background;
+    alternate-urgent-foreground: @foreground;
+    background-color:            rgba ( 0, 0, 0, 0 % );
+    alternate-active-foreground: @foreground;
+    active-background:           @background;
+    selected-active-background:  @background;
+}
+#window {
+    fullscreen: true;
+}
+#message{
+	padding: 20;
+	background-color: @background;
+	text-color: @foreground;
+	margin: 400px 600px;	
+	border: 2px;
+	border-radius:8;
+	expand: false;
+}
+
+#mainbox { 
+    padding: 20px 20px 0px 20px;
+    background-color: @background;
+    margin: 400px 600px;
+    border: 2px;
+    border-radius: 8;
+    
+}
+
+
+#inputbar {
+    border:       2px;
+    border-color: @border-color;
+    padding:      4px ;
+    border-radius: 4;
+}
+#textbox {
+    text-color: @border-color;
+}
+#listview {
+    dynamic: true;
+    cycle: false;
+    fixed-height: 0;
+    scrollbar:    false;
+    padding:      2px 0px 0px ;
+}
+#element {
+    text-color: @foreground;
+    background-color: rgba ( 30, 31, 62, 0 %);
+    //border:  0px 0px 1px 0px;
+    padding: 1px ;
+}
+
+#element.selected {
+    text-color:       @selected-normal-foreground;
+}
+#mode-switcher {
+    border:       2px dash 0px 0px ;
+    border-color: @separatorcolor;
+}
+#button.selected {
+    background-color: @background;
+    text-color:       @foreground;
+}
+#case-indicator {
+    spacing:    0;
+    text-color: @foreground;
+}
+#entry {
+    spacing:    0;
+    text-color: @border-color;
+}
+#prompt {
+    text-color: @border-color;
+}
+#inputbar {
+    children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
+}
+#textbox-prompt-colon {
+    expand:     false;
+    str:        ">>";
+    margin:     0px 0.3em 0em 0em ;
+    text-color: @border-color;
+}
