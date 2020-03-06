@@ -1,0 +1,50 @@
+!TODO tidy up
+! special
+*.foreground:   #d59ad0
+*.background:   #1e1f3e
+*.cursorColor:  #d59ad0
+
+! black
+*.color0:       #2f1e2f
+*.color8:	#401a63
+!*.color8:       #776e71
+
+! red
+*.color1:       #ef6155
+*.color9:       #ef6155
+
+! green
+*.color2:       #48b685
+*.color10:      #48b685
+
+! yellow
+*.color3:       #fec418
+*.color11:      #fec418
+
+! blue
+*.color4:       #06b6ef
+*.color12:      #06b6ef
+
+! magenta
+*.color5:       #815ba4
+*.color13:      #815ba4
+
+! cyan
+*.color6:       #5bc4bf
+*.color14:      #06b6ef
+
+!Removing the scrollbar
+URxvt.scrollBar: false
+
+!the font
+URxvt.font: xft:inconsolata:size=14:antialias=true
+URxvt.boldFont: xft:inconsolata:size=14:antialias=true
+URxvt.cursorUnderline: true
+URxvt.internalBorder: 17px
+
+!resize-font C-+, C-- and C-=
+URxvt.perl-ext-common: resize-font
+!URxvt.resize-font.smaller: C-j
+!URxvt.resize-font.bigger: C-k
+
+*.highlightColor: #401a63
