@@ -1,0 +1,12 @@
+bacend = "glx";
+
+mark-wmwin-focused = true;		# Try to detect WM windows and mark them as active.
+mark-ovredir-focused = true;
+detect-rounded-corners = true;
+
+blur-background = true;
+#blur-kern = "5,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1";
+
+inactive-dim-fixed = true;
+inactive-dim = 0.2;
+
