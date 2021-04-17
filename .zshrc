@@ -1,6 +1,10 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+
+# aliases 
+alias clone="urxvt &!"
+
 # Path to your oh-my-zsh installation.
 export ZSH="/home/lee/.oh-my-zsh"
 # Set name of the theme to load --- if set to "random", it will
@@ -69,7 +73,6 @@ ZSH_THEME="robbyrussell"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
 	git
-	archlinux
 	history-substring-search
 	colored-man-pages
 	zsh-autosuggestions
@@ -109,4 +112,9 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=91'
 path+=('/home/bin')
 path+=('/home/lee/Desktop/idea/bin')
 path+=('/home/lee/arm/bin')
-printf '\033[5 q\r'
+
+BEAM='\e[5 q\r'
+# so exiting vim does not fuck over the bar
+function precmd() {
+	printf $BEAM
+}

@@ -23,12 +23,13 @@ bindsym $mod+n border normal
 # is used in the bar {} block below.
 font xft:inconsolata 11
 
+
 # Use Mouse+$mod to drag floating windows
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec terminal
-bindsym $mod+Shift+Return exec terminal -name floating
+bindsym $mod+Return exec urxvt
+bindsym $mod+Shift+Return exec urxvt -name floating
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -41,8 +42,6 @@ bindsym $mod+d exec rofi -show run -config /home/lee/.rofi/config.rasi
 ## sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> Pulseaudio later! ##
 ################################################################################################
 
-exec --no-startup-id volumeicon
-bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
 #exec --no-startup-id pulseaudio
 #exec --no-startup-id pa-applet
 #bindsym $mod+Ctrl+m exec pavucontrol
@@ -54,11 +53,7 @@ bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
 #bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
 
 # Start Applications
-bindsym $mod+Ctrl+b exec terminal -e 'bmenu'
-bindsym $mod+F3 exec pcmanfm
 # bindsym $mod+F3 exec ranger
-bindsym $mod+Shift+F3 exec pcmanfm_pkexec
-bindsym $mod+F5 exec terminal -e 'mocp'
 #bindsym $mod+t exec --no-startup-id pkill picom
 #bindsym $mod+Ctrl+t exec --no-startup-id picom -b
 #bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
@@ -101,8 +96,8 @@ bindsym $mod+b workspace back_and_forth
 bindsym $mod+Shift+b move container to workspace back_and_forth; workspace back_and_forth
 
 # split orientation
-bindsym $mod+h split h;exec notify-send 'tile horizontally'
-bindsym $mod+v split v;exec notify-send 'tile vertically'
+bindsym $mod+h split v
+bindsym $mod+v split h
 bindsym $mod+q split toggle
 
 # toggle fullscreen mode for the focused container
@@ -217,8 +212,15 @@ for_window [class="Xfburn"] floating enable
 for_window [class="^Steam$"] floating enable
 for_window [class="^Steam$" title ="Steam"] floating disable
 
-# switch to workspace with urgent window automatically
-for_window [urgent=latest] focus
+#idea
+for_window [class="jetbrains-idea" title="win0"] floating enable
+for_window [class="jetbrains-goland" title="win0"] floating enable
+
+#zoom
+for_window [class="zoom"] floating enable
+
+#fuck off firefox icon
+for_window [name="Firefox - Sharing Indicator"] move scratchpad
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -277,23 +279,15 @@ mode "resize" {
 }
 
 # Lock screen
-bindsym $mod+X exec --no-startup-id blurlock
+# bindsym $mod+X exec --no-startup-id blurlock
 
 # Autostart applications
-exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec --no-startup-id picom -b
-exec --no-startup-id manjaro-hello
-exec --no-startup-id nm-applet
-exec --no-startup-id xfce4-power-manager
-exec --no-startup-id pamac-tray
-exec --no-startup-id clipit
+exec --no-startup-id compton
+exec --no-startup-id setxkbmap -option caps:escape
+
 # exec --no-startup-id blueman-applet
 # exec_always --no-startup-id sbxkb
-exec --no-startup-id start_conky_maia
 # exec --no-startup-id start_conky_green
-exec --no-startup-id xautolock -time 30 -locker blurlock
-exec_always --no-startup-id ff-theme-util
-exec_always --no-startup-id fix_xcursor
 
 # Color palette used for the terminal ( ~/.Xresources file )
 # Colors are gathered based on the documentation:
@@ -434,8 +428,3 @@ exec_always --no-startup-id feh --bg-scale /home/lee/Pictures/background.jpg
 
 #bindsym XF86MonBrightnessUp exec "xbacklight -inc 10; notify-send 'brightness up'"
 #bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
-bindsym XF86MonBrightnessUp exec --no-startup-id sudo blight inc 10
-bindsym XF86MonBrightnessDown exec --no-startup-id sudo blight dec 10 
-
-bindsym $mod+F12 exec --no-startup-id sudo blight inc 10
-bindsym $mod+F11 exec --no-startup-id sudo blight dec 10

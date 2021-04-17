@@ -6,3 +6,6 @@ hi Visual ctermbg=8
 hi Search ctermbg=red
 hi WildMenu ctermbg=red
 nnoremap <space><space> :noh<cr>
+au VimLeave * exercise "!printf '\033[5 q\r'"
+" enable usage of mouse
+set mouse=a
