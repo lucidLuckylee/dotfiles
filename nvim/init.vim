@@ -1,3 +1,5 @@
+"leader key
+let mapleader = " "
 "mappings
 noremap <space>e :NvimTreeToggle<cr>
 nnoremap <leader>nr :NvimTreeRefresh<CR>
@@ -26,9 +28,27 @@ Plug 'https://github.com/tpope/vim-sensible'  "some basic stuff
 Plug 'webdevel/tabulous' "gives tabs numbers
 
 Plug 'vim-python/python-syntax'
+Plug 'wellle/context.vim'	" sticky function headers
+
+" LSP
+Plug 'hrsh7th/nvim-cmp'
+Plug 'neovim/nvim-lspconfig'
+Plug 'j-hui/fidget.nvim'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+
+" For vsnip users.
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+
+Plug 'simrat39/rust-tools.nvim'
+
 " Initialize plugin system
 call plug#end()
 :luafile $HOME/.config/nvim/script.lua
+
 colorscheme dracula
 let g:python_highlight_all = 1	"enable python syntax
 
@@ -39,12 +59,27 @@ set background=dark
 set guicursor=n-c-v:hor1,i-ci-ve:ver10,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor\,sm:block-blinkwait175-blinkoff150-blinkon175
 set cursorline
 nnoremap <space><space> :noh<cr>
-au VimLeave * exercise "!printf '\033[5 q\r'"
+nnoremap <space>s :%s/\<<C-r><C-w>\>/
+"au VimLeave * exercise "!printf '\033[5 q\r'"
 " enable usage of mouse
 set mouse=a
-set clipboard^=unnamed,unnamedplus
-
+" set clipboard^=unnamed,unnamedplus
+set number relativenumber
 au BufRead,BufNewFile *.cairo set filetype=cairo
 hi MatchParen ctermbg=none ctermfg=red
 hi CursorLine guibg=#22334E
 hi Normal guibg=#02131E guifg=#49E2FF
+
+autocmd BufWritePost *.cairo silent ! cairo-format % -i  2> /dev/null
+"autocmd FileType python set equalprg=autopep8\ -
+autocmd BufWritePost *.py silent ! autopep8 --aggressive --aggressive -i % 
+
+function! ToggleVerbose()
+    if !&verbose
+        set verbosefile=~/.log/vim/verbose.log
+        set verbose=15
+    else
+        set verbose=0
+        set verbosefile=
+    endif
+endfunction
