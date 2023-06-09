@@ -52,7 +52,20 @@ vim.opt.shortmess = vim.opt.shortmess + "c"
   -- 300ms of no cursor movement to trigger CursorHold
   vim.opt.updatetime = 300
 local on_attach = function(client)
-
+  -- have a fixed column for the diagnostics to appear in
+  -- this removes the jitter when warnings/errors flow in
+  vim.wo.signcolumn = "number"
+  local keymap_opts = { buffer = buffer }
+  -- Code navigation and shortcuts
+  vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, keymap_opts)
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, keymap_opts)
+  vim.keymap.set("n", "gD", vim.lsp.buf.implementation, keymap_opts)
+  vim.keymap.set("n", "<c-k>", vim.lsp.buf.signature_help, keymap_opts)
+  vim.keymap.set("n", "1gD", vim.lsp.buf.type_definition, keymap_opts)
+  vim.keymap.set("n", "gr", vim.lsp.buf.references, keymap_opts)
+  vim.keymap.set("n", "g0", vim.lsp.buf.document_symbol, keymap_opts)
+  vim.keymap.set("n", "gW", vim.lsp.buf.workspace_symbol, keymap_opts)
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, keymap_opts)
   -- Show diagnostic popup on cursor hover
   local diag_float_grp = vim.api.nvim_create_augroup("DiagnosticFloat", { clear = true })
   vim.api.nvim_create_autocmd("CursorHold", {
@@ -116,13 +129,19 @@ cmp.setup({
     -- completion = cmp.config.window.bordered(),
     -- documentation = cmp.config.window.bordered(),
   },
-  mapping = cmp.mapping.preset.insert({
-    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.abort(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-  }),
+  mapping = {
+    ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+    ["<Tab>"] = cmp.mapping.select_next_item(),
+    -- Add tab support
+    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+    ["<C-Tab>"] = cmp.mapping.complete(),
+    ["<C-e>"] = cmp.mapping.close(),
+    ["<C-Space>"] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Insert,
+      select = true,
+    }),
+  },
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'vsnip' }, -- For vsnip users.
