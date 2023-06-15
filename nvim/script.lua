@@ -40,7 +40,7 @@ require'nvim-web-devicons'.setup {
 }
 require('gitsigns').setup()
 
---require"fidget".setup{}
+require"fidget".setup{}
 -- Set completeopt to have a better completion experience
 -- :help completeopt
 -- menuone: popup even when there's only one match
