@@ -1,3 +1,4 @@
+vim.wo.signcolumn = "number"
 require'nvim-tree'.setup {
   update_focused_file = {
     enable      = true,
@@ -37,9 +38,9 @@ require'nvim-web-devicons'.setup {
   -- will get overriden by `get_icons` option
   default = true;
 }
+require('gitsigns').setup()
 
-
-require"fidget".setup{}
+--require"fidget".setup{}
 -- Set completeopt to have a better completion experience
 -- :help completeopt
 -- menuone: popup even when there's only one match
@@ -48,13 +49,14 @@ require"fidget".setup{}
 vim.o.completeopt = "menuone,noinsert,noselect"
 vim.opt.shortmess = vim.opt.shortmess + "c"
 
-  -- Set updatetime for CursorHold
-  -- 300ms of no cursor movement to trigger CursorHold
-  vim.opt.updatetime = 300
+-- Set updatetime for CursorHold
+-- 300ms of no cursor movement to trigger CursorHold
+vim.opt.updatetime = 300
 local on_attach = function(client)
   -- have a fixed column for the diagnostics to appear in
   -- this removes the jitter when warnings/errors flow in
-  vim.wo.signcolumn = "number"
+   vim.wo.signcolumn = "number"
+  
   local keymap_opts = { buffer = buffer }
   -- Code navigation and shortcuts
   vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, keymap_opts)
@@ -186,4 +188,4 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- Setup language servers.
 local lspconfig = require('lspconfig')
-lspconfig.pyright.setup {}
+lspconfig.pyright.setup {on_attach=on_attach, capabilities=capabilities}

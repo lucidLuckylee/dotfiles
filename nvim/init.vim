@@ -30,10 +30,13 @@ Plug 'webdevel/tabulous' "gives tabs numbers
 Plug 'vim-python/python-syntax'
 Plug 'wellle/context.vim'	" sticky function headers
 
+Plug 'rhysd/conflict-marker.vim'    "git conflig markers
+Plug 'lewis6991/gitsigns.nvim'
+
 " LSP
 Plug 'hrsh7th/nvim-cmp'
 Plug 'neovim/nvim-lspconfig'
-Plug 'j-hui/fidget.nvim'
+Plug 'j-hui/fidget.nvim', { 'tag' : 'legacy'}
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
