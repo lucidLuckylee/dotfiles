@@ -33,6 +33,8 @@ Plug 'wellle/context.vim'	" sticky function headers
 Plug 'rhysd/conflict-marker.vim'    "git conflig markers
 Plug 'lewis6991/gitsigns.nvim'
 
+Plug 'lervag/vimtex'        " Better Latex support
+
 " LSP
 Plug 'hrsh7th/nvim-cmp'
 Plug 'neovim/nvim-lspconfig'
@@ -76,6 +78,13 @@ hi Normal guibg=#02131E guifg=#49E2FF
 autocmd BufWritePost *.cairo silent ! cairo-format % -i  2> /dev/null
 "autocmd FileType python set equalprg=autopep8\ -
 autocmd BufWritePost *.py silent ! autopep8 --aggressive --aggressive -i % 
+
+
+" VIM-LATEX SETUP
+let g:vimtex_view_method = 'zathura'
+let g:vimtex_compiler_latexmk = {
+            \ 'build_dir' : 'build',
+            \}
 
 function! ToggleVerbose()
     if !&verbose

@@ -40,7 +40,6 @@ require'nvim-web-devicons'.setup {
 }
 require('gitsigns').setup()
 
-require"fidget".setup{}
 -- Set completeopt to have a better completion experience
 -- :help completeopt
 -- menuone: popup even when there's only one match
@@ -189,3 +188,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 -- Setup language servers.
 local lspconfig = require('lspconfig')
 lspconfig.pyright.setup {on_attach=on_attach, capabilities=capabilities}
+lspconfig.texlab.setup {on_attach=on_attach, capabilities=capabilities}
+
+-- fidget provides some status info in the bottom right corner for lsp server
+require"fidget".setup{}
