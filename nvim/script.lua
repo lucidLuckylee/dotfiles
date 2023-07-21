@@ -38,8 +38,32 @@ require'nvim-web-devicons'.setup {
   -- will get overriden by `get_icons` option
   default = true;
 }
-require('gitsigns').setup()
+require('gitsigns').setup{
+  on_attach = function(bufnr)
+    local gs = package.loaded.gitsigns
 
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
+    end
+
+    -- Navigation
+    map('n', '<leader>gn', function()
+      if vim.wo.diff then return ']c' end
+      vim.schedule(function() gs.next_hunk() end)
+      return '<Ignore>'
+    end, {expr=true})
+
+    map('n', '<leader>gN', function()
+      if vim.wo.diff then return '[c' end
+      vim.schedule(function() gs.prev_hunk() end)
+      return '<Ignore>'
+    end, {expr=true})
+
+    map('n', '<leader>gsb', gs.stage_buffer)
+  end
+}
 -- Set completeopt to have a better completion experience
 -- :help completeopt
 -- menuone: popup even when there's only one match
@@ -67,6 +91,8 @@ local on_attach = function(client)
   vim.keymap.set("n", "g0", vim.lsp.buf.document_symbol, keymap_opts)
   vim.keymap.set("n", "gW", vim.lsp.buf.workspace_symbol, keymap_opts)
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, keymap_opts)
+  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, keymap_opts)
+  vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, keymap_opts)
   -- Show diagnostic popup on cursor hover
   local diag_float_grp = vim.api.nvim_create_augroup("DiagnosticFloat", { clear = true })
   vim.api.nvim_create_autocmd("CursorHold", {
