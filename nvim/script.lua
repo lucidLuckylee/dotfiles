@@ -38,6 +38,12 @@ require'nvim-web-devicons'.setup {
   -- will get overriden by `get_icons` option
   default = true;
 }
+require('git-conflict').setup{
+      highlights = { -- They must have background color, otherwise the default color will be used
+        incoming = 'DiffAdd',
+        current = 'DiffText',
+      }
+}
 require('gitsigns').setup{
   on_attach = function(bufnr)
     local gs = package.loaded.gitsigns
@@ -50,13 +56,13 @@ require('gitsigns').setup{
 
     -- Navigation
     map('n', '<leader>gn', function()
-      if vim.wo.diff then return ']c' end
+      if vim.wo.diff then return '<leader>gN' end
       vim.schedule(function() gs.next_hunk() end)
       return '<Ignore>'
     end, {expr=true})
 
     map('n', '<leader>gN', function()
-      if vim.wo.diff then return '[c' end
+      if vim.wo.diff then return '<leader>gn' end
       vim.schedule(function() gs.prev_hunk() end)
       return '<Ignore>'
     end, {expr=true})
@@ -64,6 +70,7 @@ require('gitsigns').setup{
     map('n', '<leader>gsb', gs.stage_buffer)
   end
 }
+
 -- Set completeopt to have a better completion experience
 -- :help completeopt
 -- menuone: popup even when there's only one match
@@ -82,7 +89,6 @@ local on_attach = function(client)
   
   local keymap_opts = { buffer = buffer }
   -- Code navigation and shortcuts
-  vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, keymap_opts)
   vim.keymap.set("n", "K", vim.lsp.buf.hover, keymap_opts)
   vim.keymap.set("n", "gD", vim.lsp.buf.implementation, keymap_opts)
   vim.keymap.set("n", "<c-k>", vim.lsp.buf.signature_help, keymap_opts)
@@ -93,6 +99,8 @@ local on_attach = function(client)
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, keymap_opts)
   vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, keymap_opts)
   vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, keymap_opts)
+  vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, keymap_opts)
+  vim.keymap.set("n", "<leader>dN", vim.diagnostic.goto_prev, keymap_opts)
   -- Show diagnostic popup on cursor hover
   local diag_float_grp = vim.api.nvim_create_augroup("DiagnosticFloat", { clear = true })
   vim.api.nvim_create_autocmd("CursorHold", {
@@ -124,16 +132,9 @@ local opts = {
   server = {
     -- on_attach is a callback called when the language server attachs to the buffer
     on_attach = on_attach,
-    settings = {
-      -- to enable rust-analyzer settings visit:
-      -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
-      ["rust-analyzer"] = {
-        -- enable clippy on save
-        checkOnSave = {
-          command = "clippy",
-        },
-      },
-    },
+    root_dir = function(fname)
+      return vim.loop.cwd()
+    end,
   },
 }
 require("rust-tools").setup(opts)
@@ -159,13 +160,11 @@ cmp.setup({
   mapping = {
     ["<S-Tab>"] = cmp.mapping.select_prev_item(),
     ["<Tab>"] = cmp.mapping.select_next_item(),
-    -- Add tab support
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-Tab>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.close(),
     ["<C-Space>"] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Insert,
+      behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     }),
   },
@@ -177,6 +176,7 @@ cmp.setup({
     -- { name = 'snippy' }, -- For snippy users.
   }, {
     { name = 'buffer' },
+    { name = 'path' },
   })
 })
 
@@ -186,15 +186,21 @@ cmp.setup.filetype('gitcommit', {
     { name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
   }, {
     { name = 'buffer' },
+    { name = 'path' },
   })
 })
 
+-- TODO keybinds dont seem to work
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline({ '/', '?' }, {
   mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = 'buffer' }
-  }
+  sources = cmp.config.sources({
+    { name = 'path' },
+    { name = 'buffer' },
+    { name = 'vsnip' },
+  }, {
+    { name = 'cmdline' }
+  })
 })
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).

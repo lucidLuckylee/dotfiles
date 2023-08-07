@@ -30,7 +30,7 @@ Plug 'webdevel/tabulous' "gives tabs numbers
 Plug 'vim-python/python-syntax'
 Plug 'wellle/context.vim'	" sticky function headers
 
-Plug 'rhysd/conflict-marker.vim'    "git conflig markers
+Plug 'akinsho/git-conflict.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 
 Plug 'lervag/vimtex'        " Better Latex support
@@ -95,3 +95,11 @@ function! ToggleVerbose()
         set verbosefile=
     endif
 endfunction
+
+nmap <leader>sp :call <SID>SynStack()<CR>
+function! <SID>SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
