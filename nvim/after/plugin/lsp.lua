@@ -27,7 +27,12 @@ lsp.set_sign_icons({ })
 lsp.nvim_workspace()
 
 lsp.setup_nvim_cmp({
-	mapping = cmp_mappings
+	mapping = cmp_mappings,
+	source  = {
+		{ name = 'nvim_lsp' },
+		{ name = 'buffer' },
+		{ name = 'path' },
+	}
 })
 
 lsp.on_attach(function(client, bufnr)

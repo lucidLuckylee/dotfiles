@@ -57,4 +57,8 @@ return require('packer').startup(function(use)
 			"nvim-telescope/telescope.nvim",
 		},
 	})
+	use 'hrsh7th/cmp-buffer'
+	use 'hrsh7th/cmp-path'
+	use 'saadparwaiz1/cmp_luasnip'
+	use "rafamadriz/friendly-snippets"
 end)
