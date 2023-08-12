@@ -61,4 +61,5 @@ return require('packer').startup(function(use)
 	use 'hrsh7th/cmp-path'
 	use 'saadparwaiz1/cmp_luasnip'
 	use "rafamadriz/friendly-snippets"
+	use 'barreiroleo/ltex-extra.nvim'
 end)
