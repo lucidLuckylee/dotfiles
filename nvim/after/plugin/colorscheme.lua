@@ -30,6 +30,10 @@ require("catppuccin").setup({
         operators = {},
     },
     color_overrides = {
+		all = {
+			-- Light blue text
+			text = "#49E2FF",
+		}
 	},
     custom_highlights = {},
     integrations = {
