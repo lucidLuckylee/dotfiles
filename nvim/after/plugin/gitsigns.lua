@@ -23,6 +23,8 @@ require('gitsigns').setup{
 
     map('n', '<leader>gsb', gs.stage_buffer)
     map('n', '<leader>gsh', gs.stage_hunk)
+    map('n', '<leader>gb', function() gs.blame_line{full=true} end)
+    map('n', '<leader>gd', gs.diffthis)
   end
 }
 

@@ -17,6 +17,7 @@ return require('packer').startup(function(use)
 	}
 	use 'mbbill/undotree'
 	use 'tpope/vim-fugitive'
+	use 'tpope/vim-sleuth'
 	use{
 		'kyazdani42/nvim-tree.lua',
 		requires = { 'nvim-tree/nvim-web-devicons', opt = true }
@@ -61,4 +62,6 @@ return require('packer').startup(function(use)
 	use 'saadparwaiz1/cmp_luasnip'
 	use "rafamadriz/friendly-snippets"
 	use 'barreiroleo/ltex-extra.nvim'
+
+	use "ellisonleao/glow.nvim"
 end)

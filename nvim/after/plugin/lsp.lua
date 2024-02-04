@@ -36,9 +36,6 @@ lsp.setup_nvim_cmp({
 })
 
 lsp.on_attach(function(client, bufnr)
-	-- have a fixed column for the diagnostics to appear in
-	-- this removes the jitter when warnings/errors flow in
-	-- (if set to "number")
 	local keymap_opts = { buffer = bufnr, remap = false }
 	-- Code navigation and shortcuts
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, keymap_opts)
