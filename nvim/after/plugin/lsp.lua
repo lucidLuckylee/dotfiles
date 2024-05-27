@@ -1,14 +1,14 @@
-local lsp = require('lsp-zero')
+local lsp_zero = require('lsp-zero')
 
-lsp.preset("recommended")
+lsp_zero.preset("recommended")
 
-lsp.ensure_installed({
+lsp_zero.ensure_installed({
 	'rust_analyzer'
 })
 
 local cmp = require('cmp')
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
-local cmp_mappings = lsp.defaults.cmp_mappings({
+local cmp_mappings = lsp_zero.defaults.cmp_mappings({
 	["<S-Tab>"] = cmp.mapping.select_prev_item(cmp_select),
 	["<Tab>"] = cmp.mapping.select_next_item(cmp_select),
 	["<C-d>"] = cmp.mapping.scroll_docs(-4),
@@ -21,12 +21,12 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 	["<C-e"] = cmp.mapping.complete(),
 })
 
-lsp.set_sign_icons({})
+lsp_zero.set_sign_icons({})
 
 -- Fix Undefined global 'vim'
-lsp.nvim_workspace()
+lsp_zero.nvim_workspace()
 
-lsp.setup_nvim_cmp({
+lsp_zero.setup_nvim_cmp({
 	mapping = cmp_mappings,
 	source  = {
 		{ name = 'nvim_lsp' },
@@ -35,11 +35,11 @@ lsp.setup_nvim_cmp({
 	}
 })
 
-lsp.on_attach(function(client, bufnr)
-	local keymap_opts = { buffer = bufnr, remap = false }
+lsp_zero.on_attach(function(client, bufnr)
+	local keymap_opts = { buffer = bufnr }
 	-- Code navigation and shortcuts
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, keymap_opts)
-	vim.keymap.set("n", "gD", vim.lsp.buf.implementation, keymap_opts)
+	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, keymap_opts)
 	vim.keymap.set("n", "<c-h>", vim.lsp.buf.signature_help, keymap_opts)
 	vim.keymap.set("n", "1gD", vim.lsp.buf.type_definition, keymap_opts)
 	vim.keymap.set("n", "gr", vim.lsp.buf.references, keymap_opts)
@@ -88,4 +88,31 @@ require("lspconfig").ltex.setup {
 	end,
 }
 
-lsp.setup()
+require("lspconfig").pylsp.setup {
+	on_attach = lsp_zero.on_attach,
+	filetypes = { 'python' },
+	settings = {
+		configurationSources = { "flake8" },
+		formatCommand = { "black" },
+		pylsp = {
+			plugins = {
+				-- jedi_completion = {fuzzy = true},
+				-- jedi_completion = {eager=true},
+				jedi_completion = {
+					include_params = true,
+				},
+				jedi_signature_help = { enabled = true },
+				pyflakes = { enabled = true },
+				pylint = {args = {'--ignore=E501,E231', '-'}, enabled=true, debounce=200},
+				pylsp_mypy = { enabled = false },
+				pycodestyle = {
+					enabled = true,
+					ignore = { 'E501', 'E231' },
+					maxLineLength = 120 },
+				yapf = { enabled = true }
+			}
+		}
+	}
+}
+
+lsp_zero.setup()
