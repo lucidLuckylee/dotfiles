@@ -72,16 +72,23 @@ return {
 			--- if you want to know more about lsp-zero and mason.nvim
 			--- read this: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guides/integrate-with-mason-nvim.md
 			lsp_zero.on_attach(function(client, bufnr)
+				---- Lsp keybinds
 				-- Enable inlay hints
+				local keymap_opts = { buffer = bufnr }
 				if client.server_capabilities.inlayHintProvider then
 					vim.lsp.inlay_hint.enable(true, { bufnr })
 					vim.keymap.set("n", "<leader>ch", function()
 						vim.lsp.inlay_hint.enable(
-						not vim.lsp.inlay_hint.is_enabled({ bufnr }), { bufnr })
+							not vim.lsp.inlay_hint.is_enabled({ bufnr }), { bufnr })
 					end)
 				end
-				-- Lsp keybinds
-				local keymap_opts = { buffer = bufnr }
+				-- Formatting with formatter.nvim as fallback
+				if client.server_capabilities.documentFormattingProvider or client.server_capabilities.documentRangeFormattingProvider then
+                    vim.keymap.set({ "n", "v" }, "<leader>cf", vim.lsp.buf.format, keymap_opts)
+                else
+                    vim.keymap.set({ "n", "v" }, "<leader>cf", vim.cmd.Format, keymap_opts)
+                end
+
 				vim.keymap.set("n", "K", vim.lsp.buf.hover, keymap_opts)
 				vim.keymap.set("n", "gD", vim.lsp.buf.declaration, keymap_opts)
 				vim.keymap.set("n", "<c-h>", vim.lsp.buf.signature_help, keymap_opts)
@@ -92,7 +99,6 @@ return {
 				vim.keymap.set("n", "gd", vim.lsp.buf.definition, keymap_opts)
 				vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, keymap_opts)
 				vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, keymap_opts)
-				vim.keymap.set({ "n", "v" }, "<leader>cf", vim.lsp.buf.format, keymap_opts)
 				vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, keymap_opts)
 				vim.keymap.set("n", "<leader>dN", vim.diagnostic.goto_prev, keymap_opts)
 				vim.keymap.set("n", "<leader>df", vim.diagnostic.open_float, keymap_opts)
@@ -116,5 +122,27 @@ return {
 				}
 			})
 		end
-	}
+	},
+
+	{
+		"mhartington/formatter.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			require('formatter').setup({
+				filetype = {
+					python = {
+						-- black
+						function()
+							return {
+								exe = "black",
+								args = { "-" },
+								stdin = true,
+							}
+						end,
+					},
+					-- other formatters for other filetypes can be added here
+				},
+			})
+		end,
+	},
 }
