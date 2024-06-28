@@ -99,9 +99,9 @@ return {
 				vim.keymap.set("n", "gd", vim.lsp.buf.definition, keymap_opts)
 				vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, keymap_opts)
 				vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, keymap_opts)
-				vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, keymap_opts)
-				vim.keymap.set("n", "<leader>dN", vim.diagnostic.goto_prev, keymap_opts)
-				vim.keymap.set("n", "<leader>df", vim.diagnostic.open_float, keymap_opts)
+				vim.keymap.set("n", "<leader>in", vim.diagnostic.goto_next, keymap_opts)
+				vim.keymap.set("n", "<leader>iN", vim.diagnostic.goto_prev, keymap_opts)
+				vim.keymap.set("n", "<leader>io", vim.diagnostic.open_float, keymap_opts)
 			end)
 
 			require('mason-lspconfig').setup({
