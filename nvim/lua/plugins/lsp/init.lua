@@ -22,11 +22,13 @@ return {
 		event = 'InsertEnter',
 		dependencies = {
 			{ 'L3MON4D3/LuaSnip' },
+			{ 'hrsh7th/cmp-buffer' },
+			{ 'hrsh7th/cmp-path' },
+			{ 'micangl/cmp-vimtex' },
 		},
 		config = function()
 			-- Here is where you configure the autocompletion settings.
 			local lsp_zero = require('lsp-zero')
-			lsp_zero.extend_cmp()
 
 			-- And you can configure cmp even more, if you want to.
 			local cmp = require('cmp')
@@ -46,6 +48,12 @@ return {
 					}),
 					["<C-e"] = cmp.mapping.complete(),
 				}),
+				sources = {
+					{ name = 'buffer' }, -- Buffer completions (for LaTeX commands)
+					{ name = 'path' }, -- File path completions
+					{ name = 'vimtex' }, -- Latex completions
+					{ name = 'nvim_lsp' }, -- LSP completions (optional, if you're using TexLab or another LSP)
+				},
 				snippet = {
 					expand = function(args)
 						require('luasnip').lsp_expand(args.body)
@@ -84,15 +92,15 @@ return {
 				end
 				-- Formatting with formatter.nvim as fallback
 				if client.server_capabilities.documentFormattingProvider or client.server_capabilities.documentRangeFormattingProvider then
-                    vim.keymap.set({ "n", "v" }, "<leader>cf", vim.lsp.buf.format, keymap_opts)
-                else
-                    vim.keymap.set({ "n", "v" }, "<leader>cf", vim.cmd.Format, keymap_opts)
-                end
+					vim.keymap.set({ "n", "v" }, "<leader>cf", vim.lsp.buf.format, keymap_opts)
+				else
+					vim.keymap.set({ "n", "v" }, "<leader>cf", vim.cmd.Format, keymap_opts)
+				end
 
 				vim.keymap.set("n", "K", vim.lsp.buf.hover, keymap_opts)
 				vim.keymap.set("n", "gD", vim.lsp.buf.declaration, keymap_opts)
 				vim.keymap.set("n", "<c-h>", vim.lsp.buf.signature_help, keymap_opts)
-				vim.keymap.set("n", "1gD", vim.lsp.buf.type_definition, keymap_opts)
+				vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, keymap_opts)
 				vim.keymap.set("n", "gr", vim.lsp.buf.references, keymap_opts)
 				vim.keymap.set("n", "g0", vim.lsp.buf.document_symbol, keymap_opts)
 				vim.keymap.set("n", "gW", vim.lsp.buf.workspace_symbol, keymap_opts)

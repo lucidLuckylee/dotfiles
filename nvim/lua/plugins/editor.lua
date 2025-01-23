@@ -1,5 +1,10 @@
 return {
 	{
+		"ellisonleao/glow.nvim",
+		config = true,
+		cmd = "Glow"
+	},
+	{
 		"nvim-tree/nvim-tree.lua",
 		version = "*",
 		lazy = false,
