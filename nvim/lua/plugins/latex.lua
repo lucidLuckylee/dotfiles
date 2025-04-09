@@ -22,13 +22,27 @@ return {
 			-- Make CursorHold trigger faster
 			vim.o.updatetime = 500 -- time in ms before CursorHold is triggered
 
-			-- Automatically trigger forward search when cursor stops moving
-			vim.api.nvim_create_autocmd("CursorHold", {
-				pattern = "*.tex",
-				callback = function()
-					vim.cmd("silent VimtexView") -- silently trigger forward search
-				end,
-			})
+			-- Define the autocmd function for toggling CursorHold
+			function ToggleCursorHold()
+				-- Check if the autocmd exists by looking for the group
+				if vim.fn.exists("#vimtex_cursorhold") > 0 then
+					-- Disable CursorHold autocmd
+					vim.cmd("autocmd! vimtex_cursorhold") -- Clear the group
+					print("CursorHold autocmd disabled.")
+				else
+					-- Enable CursorHold autocmd for .tex files
+					vim.cmd([[
+            augroup vimtex_cursorhold
+              autocmd!
+              autocmd CursorHold *.tex silent VimtexView
+            augroup END
+          ]])
+					print("CursorHold autocmd enabled.")
+				end
+			end
+
+			-- Key mapping to toggle the CursorHold autocmd using <leader>lu
+			vim.api.nvim_set_keymap('n', '<leader>lu', ':lua ToggleCursorHold()<CR>', { noremap = true, silent = true })
 		end,
 	}
 }
